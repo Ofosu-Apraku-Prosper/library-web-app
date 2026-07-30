@@ -114,3 +114,57 @@ tr.overdue { background: var(--warning-bg) !important; }
 .auth-card { width: 380px; }
 
 .inline-form { display: inline; }
+
+
+/* ---- Mobile Responsive Styles ---- */
+@media (max-width: 768px) {
+    body {
+        font-size: 16px;
+    }
+
+    .navbar {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 8px;
+        gap: 6px;
+    }
+
+    .navbar a {
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .card {
+        padding: 12px;
+    }
+
+    table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    th, td {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .btn, button {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+}
