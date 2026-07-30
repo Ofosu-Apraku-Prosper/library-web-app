@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="header-bar">
+    <h1>🛠️ Admin Dashboard</h1>
+    <p>Library-wide overview</p>
+</div>
+<div th:replace="~{fragments/header :: nav}"></div>
+
+<div class="container">
+    <div class="alert success" th:if="${message}" th:text="${message}"></div>
+    <div class="alert error" th:if="${error}" th:text="${error}"></div>
+
+    <div class="stat-grid">
+        <div class="stat-card"><div class="number" th:text="${titleCount}"></div><div class="label">Book Titles</div></div>
+        <div class="stat-card"><div class="number" th:text="${totalCopies}"></div><div class="label">Total Copies</div></div>
+        <div class="stat-card"><div class="number" th:text="${userCount}"></div><div class="label">Members</div></div>
+        <div class="stat-card"><div class="number" th:text="${activeLoanCount}"></div><div class="label">Books Out</div></div>
+        <div class="stat-card"><div class="number" th:text="${overdueCount}"></div><div class="label">Overdue</div></div>
+        <div class="stat-card"><div class="number" th:text="'$' + ${finesCollected}"></div><div class="label">Fines Collected</div></div>
+    </div>
+
+    <div class="card">
+        <h2>All Active Loans (Library-Wide)</h2>
+        <table>
+            <thead>
+            <tr><th>Member</th><th>Book</th><th>Borrowed On</th><th>Due Date</th><th></th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="loan : ${activeLoans}" th:classappend="${loan.overdue} ? 'overdue' : ''">
+                <td th:text="${loan.fullName}"></td>
+                <td th:text="${loan.bookTitle}"></td>
+                <td th:text="${loan.borrowDate}"></td>
+                <td th:text="${loan.dueDate}"></td>
+                <td>
+                    <form th:action="@{/loans/return}" method="post" class="inline-form">
+                        <input type="hidden" name="loanId" th:value="${loan.id}">
+                        <input type="hidden" name="redirectTo" value="/admin/dashboard">
+                        <button type="submit" class="btn accent">Mark Returned</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(activeLoans)}">
+                <td colspan="5" style="text-align:center; color:#888;">No books currently checked out.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

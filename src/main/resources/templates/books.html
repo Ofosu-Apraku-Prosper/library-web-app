@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Browse Books - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="header-bar">
+    <h1>📗 Browse & Borrow Books</h1>
+    <p>Only titles with at least one free copy are shown</p>
+</div>
+<div th:replace="~{fragments/header :: nav}"></div>
+
+<div class="container">
+    <div class="alert success" th:if="${message}" th:text="${message}"></div>
+    <div class="alert error" th:if="${error}" th:text="${error}"></div>
+
+    <div class="card">
+        <table>
+            <thead>
+            <tr><th>Title</th><th>Author</th><th>Copies Available</th><th></th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="book : ${books}">
+                <td th:text="${book.title}"></td>
+                <td th:text="${book.author}"></td>
+                <td th:text="${book.availableCopies}"></td>
+                <td>
+                    <form th:action="@{/books/borrow}" method="post" class="inline-form">
+                        <input type="hidden" name="bookId" th:value="${book.id}">
+                        <button type="submit" class="btn success">Borrow (14 days)</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(books)}">
+                <td colspan="4" style="text-align:center; color:#888;">No books currently available.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

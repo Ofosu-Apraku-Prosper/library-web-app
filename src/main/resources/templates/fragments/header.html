@@ -1,0 +1,15 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="nav">
+    <div class="navbar">
+        <a th:href="@{/dashboard}">🏠 Dashboard</a>
+        <a th:href="@{/books}">📗 Browse Books</a>
+        <a th:href="@{/my-loans}">📖 My Loans</a>
+        <th:block th:if="${currentUser != null and currentUser.admin}">
+            <a th:href="@{/admin/dashboard}">🛠️ Admin Dashboard</a>
+            <a th:href="@{/admin/inventory}">📦 Inventory</a>
+            <a th:href="@{/admin/users}">👥 Users</a>
+        </th:block>
+        <div class="spacer"></div>
+        <span th:if="${currentUser != null}" th:text="${currentUser.fullName}"></span>
+        <a th:href="@{/logout}">🚪 Logout</a>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="header-bar">
+    <h1 th:text="'👋 Welcome, ' + ${currentUser.fullName}"></h1>
+    <p th:text="${currentUser.admin} ? 'Administrator' : 'Member'"></p>
+</div>
+<div th:replace="~{fragments/header :: nav}"></div>
+
+<div class="container">
+    <div class="card">
+        <h2>Your Account</h2>
+        <p>Total fines paid to date: <strong th:text="'$' + ${totalFinesPaid}"></strong></p>
+        <div style="margin-top:16px; display:flex; gap:12px; flex-wrap:wrap;">
+            <a th:href="@{/books}" class="btn accent">📗 Browse & Borrow Books</a>
+            <a th:href="@{/my-loans}" class="btn primary">📖 View My Loans</a>
+            <th:block th:if="${currentUser.admin}">
+                <a th:href="@{/admin/dashboard}" class="btn success">🛠️ Admin Dashboard</a>
+                <a th:href="@{/admin/inventory}" class="btn primary">📦 Manage Inventory</a>
+            </th:block>
+        </div>
+    </div>
+</div>
+</body>
+</html>

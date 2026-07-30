@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Loans - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="header-bar">
+    <h1>📖 My Loans</h1>
+    <p th:text="'Signed in as ' + ${currentUser.fullName}"></p>
+</div>
+<div th:replace="~{fragments/header :: nav}"></div>
+
+<div class="container">
+    <div class="alert success" th:if="${message}" th:text="${message}"></div>
+    <div class="alert error" th:if="${error}" th:text="${error}"></div>
+
+    <div class="card">
+        <h2>Currently Borrowed</h2>
+        <table>
+            <thead>
+            <tr><th>Book</th><th>Borrowed On</th><th>Due Date</th><th>Est. Fine If Returned Today</th><th></th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="loan : ${activeLoans}" th:classappend="${loan.overdue} ? 'overdue' : ''">
+                <td th:text="${loan.bookTitle}"></td>
+                <td th:text="${loan.borrowDate}"></td>
+                <td th:text="${loan.dueDate}"></td>
+                <td th:text="'$' + ${estimatedFines.get(loan.id)}"></td>
+                <td>
+                    <form th:action="@{/loans/return}" method="post" class="inline-form">
+                        <input type="hidden" name="loanId" th:value="${loan.id}">
+                        <input type="hidden" name="redirectTo" value="/my-loans">
+                        <button type="submit" class="btn accent">Return</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(activeLoans)}">
+                <td colspan="5" style="text-align:center; color:#888;">Nothing currently borrowed.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>History</h2>
+        <table>
+            <thead>
+            <tr><th>Book</th><th>Borrowed On</th><th>Due Date</th><th>Returned On</th><th>Fine Paid</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="loan : ${history}">
+                <td th:text="${loan.bookTitle}"></td>
+                <td th:text="${loan.borrowDate}"></td>
+                <td th:text="${loan.dueDate}"></td>
+                <td th:text="${loan.returnDate} ?: '-'"></td>
+                <td th:text="'$' + ${loan.fine}"></td>
+                <td th:text="${loan.status}"></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(history)}">
+                <td colspan="6" style="text-align:center; color:#888;">No history yet.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

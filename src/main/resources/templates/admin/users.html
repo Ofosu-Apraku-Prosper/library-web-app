@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Users - Library Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="header-bar">
+    <h1>👥 Member Directory</h1>
+    <p>Promote members to admin, or revoke admin access</p>
+</div>
+<div th:replace="~{fragments/header :: nav}"></div>
+
+<div class="container">
+    <div class="alert success" th:if="${message}" th:text="${message}"></div>
+    <div class="alert error" th:if="${error}" th:text="${error}"></div>
+
+    <div class="card">
+        <table>
+            <thead>
+            <tr><th>Full Name</th><th>Username</th><th>Email</th><th>Role</th><th></th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.fullName}"></td>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.email}"></td>
+                <td>
+                    <span class="badge" th:classappend="${user.admin} ? 'green' : 'red'"
+                          th:text="${user.role}"></span>
+                </td>
+                <td>
+                    <form th:action="@{/admin/users/role}" method="post" class="inline-form">
+                        <input type="hidden" name="userId" th:value="${user.id}">
+                        <input type="hidden" name="role" th:value="${user.admin} ? 'MEMBER' : 'ADMIN'">
+                        <button type="submit" class="btn primary"
+                                th:text="${user.admin} ? 'Revoke Admin' : 'Make Admin'"></button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
